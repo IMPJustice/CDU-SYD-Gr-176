@@ -1,19 +1,31 @@
 import os
-from top_30_words import top_30_words
+from top_30_words import count_tokens, words_to_csv
 
-# Dir path (Need to be dynamically)
-input_directory = r'C:\Users\energ\Desktop\Hoang Phuc Huy Nguyen _ S _ Jay\Python\Assignment 2\Assignment_Material'
-output_directory = r'C:\Users\energ\Desktop\Hoang Phuc Huy Nguyen _ S _ Jay\Python\Assignment 2\CSV_Output'
+def main():
+    #Prompt the user for the input .txt file path and convert path to the raw string
+    file_path = r"{}".format(input("Enter the full path of the .txt file to process: "))
+    #Remove double quotes
+    file_path = file_path.strip('\"')
 
-# Ensure output directory exists
-os.makedirs(output_directory, exist_ok=True)
+    #Task 3.1: Count word occurrences and save to CSV
+    output_csv = 'top_30_words.csv'
+    try:
+        words_to_csv(file_path, output_csv)
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+    except PermissionError as e:
+        print(f"Error: {e}")
 
-# Process each text file in the input directory
-for filename in os.listdir(input_directory):
-    if filename.endswith('.txt'):
-        file_path = os.path.join(input_directory, filename)
-        csv_filename = os.path.splitext(filename)[0] + '_top_30_words.csv'
-        csv_path = os.path.join(output_directory, csv_filename)
-        
-        # Call the function to process the text file and save results to CSV
-        top_30_words(file_path, csv_path)
+
+    #Task 3.2: Count unique tokens using AutoTokenizer
+    output_txt = 'top_30_tokens.txt'
+    try:
+        count_tokens(file_path, output_txt,1024)
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+    except PermissionError as e:
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
